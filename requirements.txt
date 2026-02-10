@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+pydantic-settings
+structlog
+python-dotenv
+python-multipart
+python-docx
+pypdf
+openai
+google-generativeai
+sqlalchemy[asyncio]
+asyncpg
+qdrant-client
