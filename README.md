@@ -48,7 +48,7 @@ Backend Lucid is a decision intelligence platform that:
 ### Using Docker (Recommended)
 
 1.  **Configure Environment**:
-    Ensure your `.env` file has the `GEMINI_API_KEY` set.
+    Ensure your `.env` file has the `GEMINI_API_KEY` and `ARCHESTRA_AGENT_ID` set.
 
 2.  **Start Services**:
     ```bash
@@ -67,6 +67,12 @@ Backend Lucid is a decision intelligence platform that:
 ---
 
 ## 🤖 AI Architecture
+
+The **Decision Pipeline** orchestrates multiple AI agents to analyze requirements and generate technical decisions. Key features include:
+
+- **Defensive Execution**: The pipeline uses default values and fallbacks to prevent crashes if individual agents fail or return incomplete data.
+- **Resilience**: The underlying `ArchestraClient` implements exponential backoff retries for transient errors (e.g., 503 Service Unavailable, 429 Too Many Requests).
+- **Memory Integration**: Uses Qdrant to recall similar past decisions and inform the current analysis.
 
 We use **Archestra**, an enterprise-grade AI orchestration platform, to decouple AI logic from the backend.
 
@@ -283,6 +289,7 @@ DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/lucid
 
 # Gemini (Google AI)
 GEMINI_API_KEY=your-gemini-api-key
+ARCHESTRA_AGENT_ID=your-archestra-agent-id
 
 # Qdrant
 QDRANT_HOST=localhost
