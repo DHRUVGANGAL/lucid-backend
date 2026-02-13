@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     QDRANT_API_KEY: Optional[str] = None
     QDRANT_COLLECTION: str = "supermemory"
     
+    # Archestra Configuration
+    ARCHESTRA_API_URL: str = "http://archestra:9000"
+    ARCHESTRA_PROJECT: str = "backend-lucid"
+    ARCHESTRA_API_KEY: Optional[str] = None
+    ARCHESTRA_AGENT_ID: Optional[str] = None
+    
     model_config = SettingsConfigDict(
         env_file=".env",
         case_sensitive=True,

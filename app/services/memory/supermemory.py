@@ -11,7 +11,6 @@ from qdrant_client.models import (
     Filter,
     FieldCondition,
     MatchValue,
-    SearchParams,
 )
 
 from app.core.config import settings
@@ -278,14 +277,14 @@ class SupermemoryService:
         search_filter = Filter(must=filter_conditions) if filter_conditions else None
         
         # Search Qdrant
-        results = await self._client.search(
+        query_response = await self._client.query_points(
             collection_name=self.COLLECTION_NAME,
-            query_vector=query_embedding,
+            query=query_embedding,
             query_filter=search_filter,
             limit=limit,
             with_payload=True,
-            search_params=SearchParams(exact=False, hnsw_ef=128),
         )
+        results = query_response.points
         
         # Convert to MemoryEntry objects
         entries = self._results_to_entries(results)
@@ -366,12 +365,13 @@ class SupermemoryService:
         source_vector = points[0].vector
         
         # Search for similar (exclude self)
-        results = await self._client.search(
+        query_response = await self._client.query_points(
             collection_name=self.COLLECTION_NAME,
-            query_vector=source_vector,
+            query=source_vector,
             limit=limit + 1,
             with_payload=True,
         )
+        results = query_response.points
         
         # Filter out the source decision
         results = [r for r in results if r.id != str(decision_id)][:limit]
