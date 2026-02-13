@@ -1,6 +1,23 @@
-version: '3.8'
-
 services:
+  backend-lucid:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ARCHESTRA_API_URL=http://archestra:9000
+      - ARCHESTRA_PROJECT=backend-lucid
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/lucid
+      - QDRANT_URL=http://qdrant:6333
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ARCHESTRA_API_KEY=archestra_dev_key_123
+      - ARCHESTRA_AGENT_ID=${ARCHESTRA_AGENT_ID}
+    depends_on:
+      - postgres
+      - qdrant
+    networks:
+      - default
+      - archestra-net
+
   postgres:
     image: postgres:16-alpine
     container_name: lucid-postgres
@@ -14,7 +31,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,3 +51,8 @@ services:
 volumes:
   postgres_data:
   qdrant_data:
+
+
+networks:
+  archestra-net:
+    external: true

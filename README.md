@@ -31,19 +31,58 @@ Backend Lucid is a decision intelligence platform that:
                               ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                     Decision Orchestrator                           │
-│  ┌──────────┐  ┌────────────┐  ┌──────────┐  ┌───────────────┐      │
-│  │  Parser  │→ │  Context   │→ │  Rules   │→ │    Agents     │      │
-│  │ Factory  │  │  Detector  │  │  Engine  │  │ (LLM-powered) │      │
-│  └──────────┘  └────────────┘  └──────────┘  └───────────────┘      │
+│  ┌──────────┐  ┌───────────────┐  ┌──────────────────────────────┐  │
+│  │  Parser  │→ │    Decision   │→ │      Archestra Platform      │  │
+│  │ Factory  │  │    Pipeline   │  │   (Context, Arch, Impact)    │  │
+│  └──────────┘  └───────────────┘  └──────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
                               │
               ┌───────────────┼───────────────┐
               ▼               ▼               ▼
      ┌─────────────┐  ┌─────────────┐  ┌─────────────┐
-     │ PostgreSQL  │  │   Qdrant    │  │   Gemini    │
-     │  (Primary)  │  │  (Vectors)  │  │ (Embeddings)│
+     │ PostgreSQL  │  │   Qdrant    │  │   Archestra  │
+     │  (Primary)  │  │  (Vectors)  │  │  (AI Core)   │
      └─────────────┘  └─────────────┘  └─────────────┘
-```
+## 🚀 How to Run
+
+### Using Docker (Recommended)
+
+1.  **Configure Environment**:
+    Ensure your `.env` file has the `GEMINI_API_KEY` set.
+
+2.  **Start Services**:
+    ```bash
+    docker-compose up --build -d
+    ```
+
+3.  **Access Interfaces**:
+    - **Backend API Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+    - **Archestra UI**: [http://localhost:3000](http://localhost:3000)
+
+4.  **Stop Services**:
+    ```bash
+    docker-compose down
+    ```
+
+---
+
+## 🤖 AI Architecture
+
+We use **Archestra**, an enterprise-grade AI orchestration platform, to decouple AI logic from the backend.
+
+### Why Archestra?
+- **Separation of Concerns**: The FastAPI backend handles business logic and persistence, while Archestra manages LLM interactions, prompt engineering, and agent chaining.
+- **Traceability**: Every definition, decision, and risk assessment is traceable through Archestra's audit logs.
+- **Enterprise Readiness**: Archestra provides a robust runtime for agents with built-in retries, caching, and model gateway management.
+
+### Multi-Agent Workflow
+The `decision_pipeline` orchestrates a team of specialized agents:
+1. **ParserAgent**: Extracts structured requirements.
+2. **ContextAgent**: Determines project intent and risk.
+3. **ArchitectureAgent**: Proposes high-level designs.
+4. **ImpactAgent**: Analyzes technical and business impact.
+5. **EstimationAgent**: Calculates effort and confidence.
+6. **ExplanationAgent**: Synthesizes an executive summary.
 
 ---
 
